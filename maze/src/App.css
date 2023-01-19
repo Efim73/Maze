@@ -1,0 +1,22 @@
+h1{
+  font-family: 'Bigshot One', cursive;
+            font-family: 'Fredericka the Great', cursive;
+            font-family: 'Henny Penny', cursive;
+            font-family: 'Irish Grover', cursive;
+            font-family: 'Marhey', cursive;
+            font-family: 'Peralta', cursive;
+            font-family: 'Pirata One', cursive;
+            font-family: 'Rakkas', cursive;
+            font-family: 'Rye', cursive;
+            font-family: 'Skranji', cursive;
+
+}
+.wheel{
+    width: calc(100% / 3);
+    display: inline-block;
+    background-image: url('../public/candy.png');
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
