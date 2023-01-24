@@ -21,12 +21,12 @@ class App extends React.Component {
       <div id='game' >
         <form action="">
           <h1>Old House</h1>
-          <img src="boy.png" alt="" />
+          <img className='boy' src="boy.png" alt="" />
           <div className="wheel">
-            <img src="arrow.png" alt="" />
+            <img className='arrow' src="arrow.png" alt="" />
           </div>
-          <img src="ghost.png" alt="" />
-          <button>Start!</button>
+          <img className='ghost' src="ghost.png" alt="" />
+          <button className='start'>Start!</button>
         </form>
       </div>
     )
