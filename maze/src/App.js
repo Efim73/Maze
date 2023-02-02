@@ -5,7 +5,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      arrowAngle: 100,
 
 
     }
@@ -21,7 +21,7 @@ class App extends React.Component {
   
   render() {
     const  arrowStyle = {
-      transform: "translate(-50%, -50% ) rotate(45deg)",
+      transform: "translate(-50%, -50% ) rotate("+this.state.arrowAngle+"deg)",
     }
 
 

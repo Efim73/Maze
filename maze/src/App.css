@@ -19,13 +19,22 @@ h1 {
   /* font-family: 'Pirata One', cursive; */
   font-family: 'Peralta', cursive;
   text-align: center;
-  font-size: 70px;
+  font-size: 100px;
   background: rgb(244,122,122);
   background: linear-gradient(126deg, rgba(244,122,122,1) 17%, rgba(247,155,42,1) 100%);
   background-clip: text;
+  background-size: 200% 100%;
   color: rgba(0, 255, 255, 0);
   text-shadow: 0 0 70px rgba(73, 73, 73, 0.432);
+  -webkit-text-stroke: 2px white;
+  font-weight: normal;
+  transform: rotate(3deg);
+  transition: 0.4s;
 
+}
+h1:hover{
+  transform: rotate(-3deg);
+  background-position: right;
 }
 
 .wheel {
@@ -36,51 +45,66 @@ h1 {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  margin: 0 40px;
+  /* margin: 0 40px; */
   vertical-align: middle;
   position: relative;
+  height: 300px;
 
 }
 
 .boy {
-  width: calc((100% / 3) - 110px);
+  width: calc((100% / 3));
   vertical-align: middle;
-  padding: 0 35px;
-  box-shadow: 0 0 70px rgba(73, 73, 73, 0.432);
+  /* padding: 0 35px; */
+  filter: drop-shadow(0 0 10px black);
+  max-height: 400px;
+  object-fit: contain;
 
 }
 
 .ghost {
-  width: calc((100% / 3) - 80px);
+  width: calc((100% / 3));
   vertical-align: middle;
+  filter: drop-shadow(0 0 10px black);
+  max-height: 400px;
+  object-fit: contain;
+
+
 
 
 }
 
 form {
+  font-size: 0;
   display: block;
   width: 70%;
   margin: auto;
   border: 2px solid white;
   border-radius: 10px;
-  background-color: rgba(63, 63, 63, 0.295);
+  background-color: rgba(0, 0, 0, 0.178);
   /* filter: blur(5px); */
-  padding: 40px 40px;
+  padding: 40px;
   z-index: -2;
   vertical-align: middle;
-  margin-top: 100px;
+  /* filter: blur(5px); */
+  backdrop-filter: blur(4px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .arrow {
   position: absolute;
-  width: 60%;
-  transform: translateY(210%) translateX(33%) rotate(270deg);
-
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .start{
   display: block;
   font-family: 'Peralta', cursive;
-  border: 1px solid white;
+  border: 2px solid rgba(255, 255, 255, 0.514);
   border-radius: 5px;
   background: rgb(244,122,122);
   background: linear-gradient(126deg, rgba(244,122,122,1) 17%, rgba(247,155,42,1) 100%);
@@ -88,6 +112,14 @@ form {
   margin: auto;
   font-size: 30px;
   box-shadow: 0 0 70px rgba(73, 73, 73, 0.897);
-
+  color: white;
+  background-size: 200% 100% ;
+  transition: 0.4s;
   
+
+
+}
+.start:hover{
+  background-position: right;
+  border: 2px solid white;
 }
