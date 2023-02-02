@@ -10,9 +10,19 @@ class App extends React.Component {
 
     }
   }
+  startGame(){
+    console.log('start');
+    setInterval(function () {
+
+    }, 1000);
+
+    
+  }
   
   render() {
-
+    const  arrowStyle = {
+      transform: "translate(-50%, -50% ) rotate(45deg)",
+    }
 
 
 
@@ -23,10 +33,10 @@ class App extends React.Component {
           <h1>Old House</h1>
           <img className='boy' src="boy.png" alt="" />
           <div className="wheel">
-            <img className='arrow' src="arrow.png" alt="" />
+            <img style={arrowStyle} className='arrow' src="arrow.png" alt="" />
           </div>
           <img className='ghost' src="ghost.png" alt="" />
-          <button className='start'>Start!</button>
+          <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
         </form>
       </div>
     )
@@ -40,3 +50,4 @@ class App extends React.Component {
 export default App;
 
 
+// по нажатию на старт запускается интервал. Он выводит в консоли 10 20 30.. через рандомное кол-во секунд этот интервал должен остановиться 
