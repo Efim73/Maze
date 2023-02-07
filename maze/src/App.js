@@ -6,22 +6,49 @@ class App extends React.Component {
     super(props)
     this.state = {
       arrowAngle: 100,
-
+      canvas: '',
+      ctx: '',
 
     }
+    this.arrowInterval = '';
+
   }
-  startGame(){
+  startGame() {
     console.log('start');
-    setInterval(function () {
+    // let randomNumber = Math.floor(Math.random() * 100);
+    // let i = 0;
+    this.arrowInterval = setInterval(function () {
+      // i = i + 10;
+      // console.log(i)
+      this.setState(function(state){
 
+        return{
+          arrowAngle: state.arrowAngle+10,
+
+        }
+      } )
     }, 1000);
-
-    
+    setTimeout(function () {
+      console.log(123)
+        clearInterval(this.arrowInterval)
+    }, 5000)
   }
-  
+  imageLoaded() {
+    console.log(321)
+    let canvas = document.getElementsByTagName('canvas')[0];
+    let ctx = canvas.getContext('2d')
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    this.setState({
+      canvas: canvas,
+      ctx: ctx,
+    })
+    let img = document.getElementById('maze')
+    ctx.drawImage(img, 0,0)
+  }
   render() {
-    const  arrowStyle = {
-      transform: "translate(-50%, -50% ) rotate("+this.state.arrowAngle+"deg)",
+    const arrowStyle = {
+      transform: "translate(-50%, -50% ) rotate(" + this.state.arrowAngle + "deg)",
     }
 
 
@@ -29,7 +56,7 @@ class App extends React.Component {
 
     return (
       <div id='game' >
-        <form action="">
+        <form id='menu' action="">
           <h1>Old House</h1>
           <img className='boy' src="boy.png" alt="" />
           <div className="wheel">
@@ -37,6 +64,12 @@ class App extends React.Component {
           </div>
           <img className='ghost' src="ghost.png" alt="" />
           <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
+        </form>
+        <form id='game' action="">
+          <canvas>
+
+          </canvas>
+          <img onLoad={()=>this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
         </form>
       </div>
     )
@@ -50,4 +83,4 @@ class App extends React.Component {
 export default App;
 
 
-// по нажатию на старт запускается интервал. Он выводит в консоли 10 20 30.. через рандомное кол-во секунд этот интервал должен остановиться 
+// поставить героя на лабиринт. нарисовать декорации для лабиринта

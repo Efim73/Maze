@@ -5,6 +5,12 @@
 body{
   background: url('../public/bgHouse.jpg');
 }
+#menu{
+  display: none;
+}
+#maze{
+  display: none;
+}
 h1 {
   /* font-family: 'Bigshot One', cursive;
   font-family: 'Fredericka the Great', cursive;
