@@ -8,30 +8,52 @@ class App extends React.Component {
       arrowAngle: 100,
       canvas: '',
       ctx: '',
+      boyX: 100,
+      boyY: 180,
+      arrowSpeed: 15,
+      keys: [],
 
     }
     this.arrowInterval = '';
 
   }
+  componentDidMount(){
+    document.onkeydown = (event)=>{
+      console.log(event.keyCode)
+      this.setState(function(state){
+        console.log(state.keys)
+        let keys = state.keys
+        if(!keys.includes(event.keyCode)){
+
+          keys.push(event.keyCode)
+        }
+
+        return{
+          keys: keys,
+        }
+      })
+    }
+  }
   startGame() {
     console.log('start');
     // let randomNumber = Math.floor(Math.random() * 100);
     // let i = 0;
-    this.arrowInterval = setInterval(function () {
+    this.arrowInterval = setInterval( () =>{
       // i = i + 10;
       // console.log(i)
       this.setState(function(state){
 
         return{
-          arrowAngle: state.arrowAngle+10,
+          arrowAngle: state.arrowAngle-state.arrowSpeed,
+          arrowSpeed: state.arrowSpeed-15/200,
 
         }
       } )
-    }, 1000);
-    setTimeout(function () {
+    }, 10);
+    setTimeout(() =>{
       console.log(123)
         clearInterval(this.arrowInterval)
-    }, 5000)
+    }, 2000)
   }
   imageLoaded() {
     console.log(321)
@@ -43,6 +65,8 @@ class App extends React.Component {
       canvas: canvas,
       ctx: ctx,
     })
+    let boyImg = document.getElementById('boy')
+    boyImg.style.transform = "translate(" + this.state.boyX +'px,'+ this.state.boyY + "px)";
     let img = document.getElementById('maze')
     ctx.drawImage(img, 0,0)
   }
@@ -65,11 +89,15 @@ class App extends React.Component {
           <img className='ghost' src="ghost.png" alt="" />
           <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
         </form>
-        <form id='game' action="">
+        <form id='gameForm' action="">
+          <div className="maze">
           <canvas>
 
           </canvas>
           <img onLoad={()=>this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
+
+          </div>
+          <img id='boy' src="boy.png" alt="" />
         </form>
       </div>
     )
