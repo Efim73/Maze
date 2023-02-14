@@ -3,6 +3,7 @@ import React from 'react'
 
 class App extends React.Component {
   constructor(props) {
+
     super(props)
     this.state = {
       arrowAngle: 100,
@@ -10,69 +11,108 @@ class App extends React.Component {
       ctx: '',
       boyX: 100,
       boyY: 180,
+      boyStyle: {
+        left: 100,
+        top: 100,
+      },
       arrowSpeed: 15,
       keys: [],
 
     }
     this.arrowInterval = '';
+    // Нужно чтобы в функции animate  можно было использовать this.state
+    this.animate = this.animate.bind(this);
 
   }
-  componentDidMount(){
-    document.onkeydown = (event)=>{
-      console.log(event.keyCode)
+  animate(){
+    // console.log(456)
+    if(this.state.keys.length>0){
       this.setState(function(state){
+        let boyStyle = state.boyStyle;
+        boyStyle.left = boyStyle.left + 1;  
+        return{ 
+          boyStyle: boyStyle,
+        }
+      })
+    }
+  }
+  componentDidMount() {
+    document.onkeydown = (event) => {
+      console.log(event.keyCode)
+      this.setState(function (state) {
+
         console.log(state.keys)
         let keys = state.keys
-        if(!keys.includes(event.keyCode)){
+        if (!keys.includes(event.keyCode)) {
 
           keys.push(event.keyCode)
         }
+        return {
+          keys: keys,
 
+        }
+      })
+    }
+    document.onkeyup = (event)=>{
+      this.setState(function(state){
+        let keys = state.keys;
+        if(keys.includes(event.keyCode)){
+          // с помощью indexOf находим индекс кнопки
+          // С помощью  splice  находим 1 кнопку по ее индексу т удаляем из массива
+          keys.splice(keys.indexOf(event.keyCode), 1)
+        }
         return{
           keys: keys,
         }
       })
     }
+    setInterval(this.animate, 10)
   }
   startGame() {
     console.log('start');
     // let randomNumber = Math.floor(Math.random() * 100);
     // let i = 0;
-    this.arrowInterval = setInterval( () =>{
+    this.arrowInterval = setInterval(() => {
       // i = i + 10;
       // console.log(i)
-      this.setState(function(state){
+      this.setState(function (state) {
 
-        return{
-          arrowAngle: state.arrowAngle-state.arrowSpeed,
-          arrowSpeed: state.arrowSpeed-15/200,
+        return {
+          arrowAngle: state.arrowAngle - state.arrowSpeed,
+          arrowSpeed: state.arrowSpeed - 15 / 200,
 
         }
-      } )
+      })
     }, 10);
-    setTimeout(() =>{
+    setTimeout(() => {
       console.log(123)
-        clearInterval(this.arrowInterval)
+      clearInterval(this.arrowInterval)
     }, 2000)
   }
   imageLoaded() {
     console.log(321)
     let canvas = document.getElementsByTagName('canvas')[0];
     let ctx = canvas.getContext('2d')
-    canvas.width = window.innerWidth
+    let maze = document.getElementsByClassName('maze')[0];
+    maze.style.width = window.innerHeight
+    canvas.width = window.innerHeight
     canvas.height = window.innerHeight
     this.setState({
       canvas: canvas,
       ctx: ctx,
     })
-    let boyImg = document.getElementById('boy')
-    boyImg.style.transform = "translate(" + this.state.boyX +'px,'+ this.state.boyY + "px)";
+
     let img = document.getElementById('maze')
-    ctx.drawImage(img, 0,0)
+    ctx.drawImage(img, 0, 0)
   }
   render() {
     const arrowStyle = {
       transform: "translate(-50%, -50% ) rotate(" + this.state.arrowAngle + "deg)",
+    }
+    const boyStyle = {
+      left: this.state.boyStyle.left+'px',
+      top: this.state.boyStyle.top+'px',
+
     }
 
 
@@ -91,13 +131,13 @@ class App extends React.Component {
         </form>
         <form id='gameForm' action="">
           <div className="maze">
-          <canvas>
+            <canvas>
 
-          </canvas>
-          <img onLoad={()=>this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
+            </canvas>
+            <img onLoad={() => this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
+            <img id='boy' src="boy.png" alt="" style={boyStyle}/>
 
           </div>
-          <img id='boy' src="boy.png" alt="" />
         </form>
       </div>
     )
@@ -111,4 +151,4 @@ class App extends React.Component {
 export default App;
 
 
-// поставить героя на лабиринт. нарисовать декорации для лабиринта
+// Сделать управление мальчиком
