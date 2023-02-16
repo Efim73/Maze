@@ -168,3 +168,10 @@ form {
   background-position: right;
   border: 2px solid white;
 }
+
+.maze h2{
+  font-size: 40px;
+}
+.maze h3{
+  font-size: 30px;
+}

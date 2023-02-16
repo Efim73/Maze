@@ -17,6 +17,7 @@ class App extends React.Component {
       },
       arrowSpeed: 15,
       keys: [],
+      time: 59,
 
     }
     this.arrowInterval = '';
@@ -24,12 +25,58 @@ class App extends React.Component {
     this.animate = this.animate.bind(this);
 
   }
+  time() {
+    this.setState(function(state){
+      let time = state.time;
+      setInterval(()=>{
+        time = time -1
+      },1000)
+      return{
+        time: state.time
+      }
+    })
+  }
   animate(){
     // console.log(456)
+
     if(this.state.keys.length>0){
       this.setState(function(state){
+        let ctx = state.ctx;
+
         let boyStyle = state.boyStyle;
-        boyStyle.left = boyStyle.left + 1;  
+        let keys = state.keys;
+        let middleColor = ctx.getImageData(boyStyle.left+15, boyStyle.top+25, 1, 1).data[3];
+        if(keys.includes(68)){
+
+          boyStyle.left = boyStyle.left + 1
+          // console.log(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]);
+          if(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+          boyStyle.left = boyStyle.left - 1;
+
+          }
+        }
+        if(keys.includes(65)){
+          boyStyle.left = boyStyle.left - 1
+          if(ctx.getImageData(boyStyle.left, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+            boyStyle.left = boyStyle.left + 1;
+  
+            }
+        }
+        if(keys.includes(87)){
+          boyStyle.top = boyStyle.top - 1
+          if(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+            boyStyle.top = boyStyle.top + 1;
+  
+            }
+        }
+        if(keys.includes(83)){
+          boyStyle.top = boyStyle.top + 1
+          if(ctx.getImageData(boyStyle.left+30, boyStyle.top+50, 1, 1).data[3]>0 || middleColor>0){
+            boyStyle.top = boyStyle.top - 1;
+  
+            }
+        }
+        // boyStyle.left = boyStyle.left + 1;  
         return{ 
           boyStyle: boyStyle,
         }
@@ -66,15 +113,12 @@ class App extends React.Component {
         }
       })
     }
+    // зачем передавать this.animate
     setInterval(this.animate, 10)
   }
   startGame() {
     console.log('start');
-    // let randomNumber = Math.floor(Math.random() * 100);
-    // let i = 0;
     this.arrowInterval = setInterval(() => {
-      // i = i + 10;
-      // console.log(i)
       this.setState(function (state) {
 
         return {
@@ -131,6 +175,10 @@ class App extends React.Component {
         </form>
         <form id='gameForm' action="">
           <div className="maze">
+            <div className="time">
+              <h2>Time</h2>
+              <h3>00 : 59</h3>
+            </div>
             <canvas>
 
             </canvas>
