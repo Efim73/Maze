@@ -175,3 +175,17 @@ form {
 .maze h3{
   font-size: 30px;
 }
+
+
+
+.time{
+  background-color: gold;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: -1;
+  transform: translateX(calc(-100% + 7px)) translateY(-50%) ;
+  padding: 10px 20px;
+  border: 8px solid black;
+
+}

@@ -17,22 +17,29 @@ class App extends React.Component {
       },
       arrowSpeed: 15,
       keys: [],
-      time: 59,
+      time: 1200,
+      timeDisplay: '',
+
 
     }
     this.arrowInterval = '';
     // Нужно чтобы в функции animate  можно было использовать this.state
     this.animate = this.animate.bind(this);
+    this.time = this.time.bind(this);
 
   }
   time() {
     this.setState(function(state){
-      let time = state.time;
-      setInterval(()=>{
-        time = time -1
-      },1000)
+      // let time = state.time;
+      // setInterval(()=>{
+      //   time = time -1
+      // },1000)
+      let minutes = Math.floor(state.time/600)
+      let seconds = Math.floor((state.time - minutes*600)/10)
+      let ms = state.time%10
       return{
-        time: state.time
+        time: state.time-1,
+        timeDisplay: minutes+':'+seconds+':'+ms,
       }
     })
   }
@@ -45,33 +52,36 @@ class App extends React.Component {
 
         let boyStyle = state.boyStyle;
         let keys = state.keys;
+        let boy = document.getElementById('boy')
         let middleColor = ctx.getImageData(boyStyle.left+15, boyStyle.top+25, 1, 1).data[3];
         if(keys.includes(68)){
 
           boyStyle.left = boyStyle.left + 1
+          console.log()
           // console.log(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]);
-          if(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+          if(ctx.getImageData(boyStyle.left+boy.offsetWidth, boyStyle.top, 1, boy.offsetHeight).data.includes(255)){
           boyStyle.left = boyStyle.left - 1;
 
           }
         }
         if(keys.includes(65)){
           boyStyle.left = boyStyle.left - 1
-          if(ctx.getImageData(boyStyle.left, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+          if(ctx.getImageData( boyStyle.left, boyStyle.top, 1, boy.offsetHeight).data.includes(255)){
             boyStyle.left = boyStyle.left + 1;
   
             }
         }
         if(keys.includes(87)){
           boyStyle.top = boyStyle.top - 1
-          if(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]>0 || middleColor>0){
+          if(ctx.getImageData(boyStyle.left, boyStyle.top, boy.offsetWidth, 1).data.includes(255)){
+            console.log(ctx.getImageData(boyStyle.left, boyStyle.top, boyStyle.left+boy.offsetWidth, 1).data.includes(255))
             boyStyle.top = boyStyle.top + 1;
   
             }
         }
         if(keys.includes(83)){
           boyStyle.top = boyStyle.top + 1
-          if(ctx.getImageData(boyStyle.left+30, boyStyle.top+50, 1, 1).data[3]>0 || middleColor>0){
+          if(ctx.getImageData(  boyStyle.left ,boyStyle.top+boy.offsetHeight,  boy.offsetWidth, 1).data.includes(255)){
             boyStyle.top = boyStyle.top - 1;
   
             }
@@ -84,6 +94,7 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
+    setInterval(this.time ,100)
     document.onkeydown = (event) => {
       console.log(event.keyCode)
       this.setState(function (state) {
@@ -177,7 +188,7 @@ class App extends React.Component {
           <div className="maze">
             <div className="time">
               <h2>Time</h2>
-              <h3>00 : 59</h3>
+              <h3>{this.state.timeDisplay}</h3>
             </div>
             <canvas>
 
@@ -199,4 +210,4 @@ class App extends React.Component {
 export default App;
 
 
-// Сделать управление мальчиком
+// Сделать управление  призраком
