@@ -15,8 +15,13 @@ class App extends React.Component {
         left: 100,
         top: 100,
       },
+      ghostStyle: {
+        left: 100,
+        top: 100,
+      },
       arrowSpeed: 15,
       keys: [],
+      ghostKeys: [],
       time: 1200,
       timeDisplay: '',
 
@@ -45,7 +50,48 @@ class App extends React.Component {
   }
   animate(){
     // console.log(456)
+    if(this.state.ghostKeys.length>0){
+      this.setState(function(state){
+        let ctx = state.ctx;
 
+        let ghostStyle = state.ghostStyle;
+        let ghostKeys = state.ghostKeys;
+        console.log(ghostKeys.length)
+
+        let ghost = document.getElementById('ghost')
+        // let middleColor = ctx.getImageData(ghostStyle.left+15, ghostStyle.top+25, 1, 1).data[3];
+        if(ghostKeys.includes(39)){
+          ghostStyle.left = ghostStyle.left + 1
+          if(ctx.getImageData(ghostStyle.left+ghost.offsetWidth, ghostStyle.top, 1, ghost.offsetHeight).data.includes(255)){
+          ghostStyle.left = ghostStyle.left - 1;
+          }
+        }
+        if(ghostKeys.includes(37)){
+          ghostStyle.left = ghostStyle.left - 1
+          if(ctx.getImageData( ghostStyle.left, ghostStyle.top, 1, ghost.offsetHeight).data.includes(255)){
+            ghostStyle.left = ghostStyle.left + 1;
+  
+            }
+        }
+        if(ghostKeys.includes(38)){
+          ghostStyle.top = ghostStyle.top - 1
+          if(ctx.getImageData(ghostStyle.left, ghostStyle.top, ghost.offsetWidth, 1).data.includes(255)){
+            ghostStyle.top = ghostStyle.top + 1;
+  
+            }
+        }
+        if(ghostKeys.includes(40)){
+          ghostStyle.top = ghostStyle.top + 1
+          if(ctx.getImageData(  ghostStyle.left ,ghostStyle.top+ghost.offsetHeight,  ghost.offsetWidth, 1).data.includes(255)){
+            ghostStyle.top = ghostStyle.top - 5;
+  
+            }
+        }
+        return{ 
+          ghostStyle: ghostStyle,
+        }
+      })
+    }
     if(this.state.keys.length>0){
       this.setState(function(state){
         let ctx = state.ctx;
@@ -101,12 +147,18 @@ class App extends React.Component {
 
         console.log(state.keys)
         let keys = state.keys
+        let ghostKeys = state.ghostKeys
+        if(!ghostKeys.includes(event.ghostKeys)){
+          ghostKeys.push(event.keyCode)
+        }
         if (!keys.includes(event.keyCode)) {
 
           keys.push(event.keyCode)
+
         }
         return {
           keys: keys,
+          ghostKeys: ghostKeys,
 
         }
       })
@@ -114,12 +166,17 @@ class App extends React.Component {
     document.onkeyup = (event)=>{
       this.setState(function(state){
         let keys = state.keys;
+        let ghostKeys = state.ghostKeys
         if(keys.includes(event.keyCode)){
           // с помощью indexOf находим индекс кнопки
           // С помощью  splice  находим 1 кнопку по ее индексу т удаляем из массива
           keys.splice(keys.indexOf(event.keyCode), 1)
         }
+        if(ghostKeys.includes(event.keyCode)){
+          ghostKeys.splice(ghostKeys.indexOf(event.keyCode),1)
+        }
         return{
+          ghostKeys: ghostKeys,
           keys: keys,
         }
       })
@@ -169,6 +226,11 @@ class App extends React.Component {
       top: this.state.boyStyle.top+'px',
 
     }
+    const ghostStyle = {
+      left: this.state.ghostStyle.left+'px',
+      top: this.state.ghostStyle.top+'px'
+
+    }
 
 
 
@@ -195,6 +257,9 @@ class App extends React.Component {
             </canvas>
             <img onLoad={() => this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
             <img id='boy' src="boy.png" alt="" style={boyStyle}/>
+            <img id='ghost' src="ghost.png" alt="" style={ghostStyle}/>
+
+
 
           </div>
         </form>
