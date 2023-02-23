@@ -22,12 +22,15 @@ class App extends React.Component {
       arrowSpeed: 15,
       keys: [],
       ghostKeys: [],
-      time: 1200,
+      time: 20,
       timeDisplay: '',
+      menuClass: '',
 
 
     }
     this.arrowInterval = '';
+    this.gameInterval = '';
+
     // Нужно чтобы в функции animate  можно было использовать this.state
     this.animate = this.animate.bind(this);
     this.time = this.time.bind(this);
@@ -39,6 +42,9 @@ class App extends React.Component {
       // setInterval(()=>{
       //   time = time -1
       // },1000)
+      if(state.time==0){
+        clearInterval(this.gameInterval);
+      }
       let minutes = Math.floor(state.time/600)
       let seconds = Math.floor((state.time - minutes*600)/10)
       let ms = state.time%10
@@ -140,7 +146,7 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-    setInterval(this.time ,100)
+    this.gameInterval = setInterval(this.time ,100)
     document.onkeydown = (event) => {
       console.log(event.keyCode)
       this.setState(function (state) {
@@ -199,6 +205,12 @@ class App extends React.Component {
     setTimeout(() => {
       console.log(123)
       clearInterval(this.arrowInterval)
+      this.setState(function(state){
+        return{
+            menuClass: 'menuHidden',
+        }
+      })
+
     }, 2000)
   }
   imageLoaded() {
@@ -237,7 +249,7 @@ class App extends React.Component {
 
     return (
       <div id='game' >
-        <form id='menu' action="">
+        <form id='menu' className={this.state.menuClass} action="">
           <h1>Old House</h1>
           <img className='boy' src="boy.png" alt="" />
           <div className="wheel">
