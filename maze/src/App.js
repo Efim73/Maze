@@ -16,15 +16,19 @@ class App extends React.Component {
         top: 100,
       },
       ghostStyle: {
-        left: 100,
+        left: 180,
         top: 100,
       },
       arrowSpeed: 15,
       keys: [],
       ghostKeys: [],
-      time: 20,
+      time: 200,
       timeDisplay: '',
+      spendTimeDisplay: '',
       menuClass: '',
+      catcher: 'ghost',
+      endFormClass: '',
+      spendTime: 0,
 
 
     }
@@ -38,19 +42,46 @@ class App extends React.Component {
   }
   time() {
     this.setState(function(state){
+      let boyStyle = state.boyStyle;
+      let ghostStyle = state.ghostStyle;
+      let endFormClass = state.endFormClass;
+      let catcher = state.catcher;
+      // console.log(this.state.spendTime);
+      if(Math.abs(boyStyle.left-ghostStyle.left)<15 && Math.abs(boyStyle.top-ghostStyle.top)<15){
+        clearInterval(this.gameInterval);
+        endFormClass = 'endFormVisible'  
+
+
+      }
       // let time = state.time;
       // setInterval(()=>{
       //   time = time -1
       // },1000)
       if(state.time==0){
         clearInterval(this.gameInterval);
+        catcher = catcher === 'boy'? 'ghost' : 'boy';
+        endFormClass = 'endFormVisible'  
+
       }
       let minutes = Math.floor(state.time/600)
       let seconds = Math.floor((state.time - minutes*600)/10)
       let ms = state.time%10
+
+
+      let spendTime = state.spendTime;
+      spendTime = spendTime+1;
+      let spendMinutes = Math.floor(spendTime/600)
+      let spendSeconds = Math.floor((spendTime - spendMinutes*600)/10)
+      let spendMs = spendTime%10
+
       return{
+
+        spendTime: spendTime,
+        catcher: catcher,
+        endFormClass: endFormClass,
         time: state.time-1,
         timeDisplay: minutes+':'+seconds+':'+ms,
+        spendTimeDisplay:  spendMinutes+':'+spendSeconds+':'+spendMs,
       }
     })
   }
@@ -154,7 +185,7 @@ class App extends React.Component {
         console.log(state.keys)
         let keys = state.keys
         let ghostKeys = state.ghostKeys
-        if(!ghostKeys.includes(event.ghostKeys)){
+        if(!ghostKeys.includes(event.keyCode)){
           ghostKeys.push(event.keyCode)
         }
         if (!keys.includes(event.keyCode)) {
@@ -205,6 +236,15 @@ class App extends React.Component {
     setTimeout(() => {
       console.log(123)
       clearInterval(this.arrowInterval)
+      let catcher;
+      let angle = Math.abs(this.state.arrowAngle)
+      if((angle - Math.floor(angle / 360) * 360 ) > 180){
+        catcher = 'ghost'
+      }
+      else{
+        catcher = 'boy'
+      }
+      console.log(catcher, angle - Math.floor(angle / 360) * 360 );
       this.setState(function(state){
         return{
             menuClass: 'menuHidden',
@@ -275,6 +315,12 @@ class App extends React.Component {
 
           </div>
         </form>
+        <form className={this.state.endFormClass} id='endForm' action="">
+          <h2>You won</h2>
+          <h3>Your time {this.state.spendTimeDisplay}</h3>
+          <img src={this.state.catcher+'.png'} alt="" />
+          <a className='newGame' href="">New Game</a>
+        </form>
       </div>
     )
   }
@@ -287,4 +333,4 @@ class App extends React.Component {
 export default App;
 
 
-// Сделать управление  призраком
+// Сделать стрелку рандомной. Стили
