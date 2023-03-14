@@ -9,10 +9,10 @@ body{
   background: url('../public/bgHouse.jpg');
 }
 #menu{
-  /* display: none; */
+  display: none;
 }
 #maze{
-  /* display: none; */
+  display: none;
 
 }
 .maze{
@@ -37,7 +37,7 @@ body{
 }
 #gameForm{
   box-sizing: border-box;
-  /* display: none; */
+  opacity: 0;
   /* height: 90%; */
   text-align: center;
   border: none;
@@ -51,6 +51,7 @@ body{
   
 }
 #activeGameForm{
+  opacity: 1;
   box-sizing: border-box;
   text-align: center;
   border: none;
@@ -213,7 +214,7 @@ form {
 }
 
 #endForm{
-  display: none;
+  /* display: none; */
 
   text-align: center;
   opacity: 0;

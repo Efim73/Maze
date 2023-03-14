@@ -22,14 +22,14 @@ class App extends React.Component {
       arrowSpeed: 15,
       keys: [],
       ghostKeys: [],
-      time: 200,
+      time: 1200,
       timeDisplay: '',
       spendTimeDisplay: '',
       menuClass: '',
       catcher: 'ghost',
       endFormClass: '',
       spendTime: 0,
-      gameForm: gameForm,
+      gameForm: "activeGameForm",
 
 
     }
@@ -47,18 +47,20 @@ class App extends React.Component {
       let ghostStyle = state.ghostStyle;
       let endFormClass = state.endFormClass;
       let catcher = state.catcher;
+      let gameForm = state.gameForm;  
       // console.log(this.state.spendTime);
-      if(Math.abs(boyStyle.left-ghostStyle.left)<15 && Math.abs(boyStyle.top-ghostStyle.top)<15){
+      if(Math.abs(boyStyle.left-ghostStyle.left)<25 && Math.abs(boyStyle.top-ghostStyle.top)<25){
+
         clearInterval(this.gameInterval);
         endFormClass = 'endFormVisible'  
-
+        gameForm = 'gameForm';
 
       }
       // let time = state.time;
       // setInterval(()=>{
       //   time = time -1
       // },1000)
-      if(state.time==0){
+      if(state.time===0){
         clearInterval(this.gameInterval);
         catcher = catcher === 'boy'? 'ghost' : 'boy';
         endFormClass = 'endFormVisible'  
@@ -83,6 +85,7 @@ class App extends React.Component {
         time: state.time-1,
         timeDisplay: minutes+':'+seconds+':'+ms,
         spendTimeDisplay:  spendMinutes+':'+spendSeconds+':'+spendMs,
+        gameForm: gameForm,
       }
     })
   }
@@ -137,7 +140,7 @@ class App extends React.Component {
         let boyStyle = state.boyStyle;
         let keys = state.keys;
         let boy = document.getElementById('boy')
-        let middleColor = ctx.getImageData(boyStyle.left+15, boyStyle.top+25, 1, 1).data[3];
+        // let middleColor = ctx.getImageData(boyStyle.left+15, boyStyle.top+25, 1, 1).data[3];
         if(keys.includes(68)){
 
           boyStyle.left = boyStyle.left + 1
@@ -225,7 +228,7 @@ class App extends React.Component {
   startGame() {
     console.log('start');
     let plusArrowAngle = Math.random()*50;
-    let arrowAngle = this.state.arrowAngle + plusArrowAngle;
+    let arrowAngle = this.state.arrowAngle;
     this.arrowInterval = setInterval(() => {
       this.setState(function (state) {
 
@@ -253,8 +256,8 @@ class App extends React.Component {
 
 
         return{
-          gameForm: activeGameForm,
-          menuClass: 'menuHidden',
+          // gameForm: "activeGameForm",
+          // menuClass: 'menuHidden',
         }
       })
 
@@ -274,7 +277,10 @@ class App extends React.Component {
     })
 
     let img = document.getElementById('maze')
-    ctx.drawImage(img, 0, 0)
+    ctx.drawImage(img, 0, 0, window.innerHeight, window.innerHeight)
+  }
+  newGame(){
+
   }
   render() {
     const arrowStyle = {
@@ -305,7 +311,7 @@ class App extends React.Component {
           <img className='ghost' src="ghost.png" alt="" />
           <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
         </form>
-        <form id={gameForm} action="">
+        <form id={this.state.gameForm} action="">
           <div className="maze">
             <div className="time">
               <h2>Time</h2>
@@ -314,7 +320,7 @@ class App extends React.Component {
             <canvas>
 
             </canvas>
-            <img onLoad={() => this.imageLoaded()} id='maze' src="kidmaze-01.svg" alt="" />
+            <img onLoad={() => this.imageLoaded()} id='maze' src="kidmaze.png" alt="" />
             <img id='boy' src="boy.png" alt="" style={boyStyle}/>
             <img id='ghost' src="ghost.png" alt="" style={ghostStyle}/>
 
@@ -322,11 +328,11 @@ class App extends React.Component {
 
           </div>
         </form>
-        <form className={this.state.endFormClass} id='endForm' action="">
+        <form className={this.state.endFormClass} id='endForm' action="" onSubmit={(e) => this.newGame()}>
           <h2>You won</h2>
           <h3>Your time {this.state.spendTimeDisplay}</h3>
           <img src={this.state.catcher+'.png'} alt="" />
-          <a className='newGame' href="">New Game</a>
+          <button className='newGame' >New Game</button>
         </form>
       </div>
     )
@@ -340,4 +346,5 @@ class App extends React.Component {
 export default App;
 
 
-// Сделать стрелку рандомной. Стили
+// Стилт для endForm 
+// при нажатии на newgame прятать endform
