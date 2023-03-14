@@ -37,7 +37,7 @@ body{
 }
 #gameForm{
   box-sizing: border-box;
-  display: none;
+  /* display: none; */
   /* height: 90%; */
   text-align: center;
   border: none;
@@ -49,6 +49,18 @@ body{
   left: 0;
   background-color: rgba(165, 42, 42, 0.397);
   
+}
+#activeGameForm{
+  box-sizing: border-box;
+  text-align: center;
+  border: none;
+  border-radius: 0;
+  transform: none;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(165, 42, 42, 0.397);
 }
 canvas{
   /* height: 100%; */

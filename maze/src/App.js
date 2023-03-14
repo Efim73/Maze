@@ -29,6 +29,7 @@ class App extends React.Component {
       catcher: 'ghost',
       endFormClass: '',
       spendTime: 0,
+      gameForm: gameForm,
 
 
     }
@@ -223,12 +224,15 @@ class App extends React.Component {
   }
   startGame() {
     console.log('start');
+    let plusArrowAngle = Math.random()*50;
+    let arrowAngle = this.state.arrowAngle + plusArrowAngle;
     this.arrowInterval = setInterval(() => {
       this.setState(function (state) {
 
         return {
-          arrowAngle: state.arrowAngle - state.arrowSpeed,
+          arrowAngle: arrowAngle - state.arrowSpeed,
           arrowSpeed: state.arrowSpeed - 15 / 200,
+
 
         }
       })
@@ -246,8 +250,11 @@ class App extends React.Component {
       }
       console.log(catcher, angle - Math.floor(angle / 360) * 360 );
       this.setState(function(state){
+
+
         return{
-            menuClass: 'menuHidden',
+          gameForm: activeGameForm,
+          menuClass: 'menuHidden',
         }
       })
 
@@ -298,7 +305,7 @@ class App extends React.Component {
           <img className='ghost' src="ghost.png" alt="" />
           <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
         </form>
-        <form id='gameForm' action="">
+        <form id={gameForm} action="">
           <div className="maze">
             <div className="time">
               <h2>Time</h2>
