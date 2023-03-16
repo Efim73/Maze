@@ -9,7 +9,7 @@ body{
   background: url('../public/bgHouse.jpg');
 }
 #menu{
-  display: none;
+  /* display: none; */
 }
 #maze{
   display: none;
@@ -52,6 +52,7 @@ body{
 }
 #activeGameForm{
   opacity: 1;
+  display: none;
   box-sizing: border-box;
   text-align: center;
   border: none;
@@ -214,7 +215,7 @@ form {
 }
 
 #endForm{
-  /* display: none; */
+  display: none;
 
   text-align: center;
   opacity: 0;
@@ -233,4 +234,19 @@ form {
 }
 .endFormVisible{
   opacity: 1 !important;
+}
+.selectedHero{
+  animation: 1s 3 highlights;
+}
+@keyframes highlights{
+  0%{
+    transform: scale(1);
+
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
 }

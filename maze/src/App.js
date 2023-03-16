@@ -6,7 +6,7 @@ class App extends React.Component {
 
     super(props)
     this.state = {
-      arrowAngle: 100,
+      arrowAngle: 90,
       canvas: '',
       ctx: '',
       boyX: 100,
@@ -19,7 +19,7 @@ class App extends React.Component {
         left: 180,
         top: 100,
       },
-      arrowSpeed: 15,
+      arrowSpeed: 5,
       keys: [],
       ghostKeys: [],
       time: 1200,
@@ -31,7 +31,8 @@ class App extends React.Component {
       spendTime: 0,
       gameForm: "activeGameForm",
 
-
+      boyClass: '',
+      ghostClass: '',
     }
     this.arrowInterval = '';
     this.gameInterval = '';
@@ -226,15 +227,40 @@ class App extends React.Component {
     setInterval(this.animate, 10)
   }
   startGame() {
+    let randomTime = Math.random()*2900 + 100;
     console.log('start');
     let plusArrowAngle = Math.random()*50;
-    let arrowAngle = this.state.arrowAngle;
     this.arrowInterval = setInterval(() => {
       this.setState(function (state) {
-
+        let arrowAngle = state.arrowAngle;
+        let arrowSpeed = state.arrowSpeed
+        let catcher;
+        let ghostClass = ''
+        let boyClass = ''
+        if(arrowSpeed < 5){
+          arrowSpeed = arrowSpeed - 0.01
+        }
+        if(arrowSpeed < 0.1){
+          let angle = state.arrowAngle
+          if((angle - Math.floor(angle / 360) * 360 ) < 180){
+            catcher = 'ghost'
+            ghostClass = 'selectedHero'
+          }
+          else{
+            catcher = 'boy'
+            boyClass = 'selectedHero'
+          }
+          console.log(catcher, angle - Math.floor(angle / 360) * 360 );
+          clearInterval(this.arrowInterval)
+          arrowSpeed = 5;
+        }
         return {
-          arrowAngle: arrowAngle - state.arrowSpeed,
-          arrowSpeed: state.arrowSpeed - 15 / 200,
+          catcher: catcher,
+          boyClass: boyClass,
+          ghostClass: ghostClass,
+          arrowSpeed: arrowSpeed,
+          arrowAngle: arrowAngle + state.arrowSpeed,
+          // arrowSpeed: state.arrowSpeed - 15 / 200,
 
 
         }
@@ -242,26 +268,19 @@ class App extends React.Component {
     }, 10);
     setTimeout(() => {
       console.log(123)
-      clearInterval(this.arrowInterval)
-      let catcher;
-      let angle = Math.abs(this.state.arrowAngle)
-      if((angle - Math.floor(angle / 360) * 360 ) > 180){
-        catcher = 'ghost'
-      }
-      else{
-        catcher = 'boy'
-      }
-      console.log(catcher, angle - Math.floor(angle / 360) * 360 );
+      // clearInterval(this.arrowInterval)
+
       this.setState(function(state){
 
 
         return{
+          arrowSpeed: state.arrowSpeed - 0.1,
           // gameForm: "activeGameForm",
           // menuClass: 'menuHidden',
         }
       })
 
-    }, 2000)
+    }, randomTime)
   }
   imageLoaded() {
     console.log(321)
@@ -304,11 +323,11 @@ class App extends React.Component {
       <div id='game' >
         <form id='menu' className={this.state.menuClass} action="">
           <h1>Old House</h1>
-          <img className='boy' src="boy.png" alt="" />
+          <img className={'boy '+ this.state.boyClass} src="boy.png" alt="" />
           <div className="wheel">
             <img style={arrowStyle} className='arrow' src="arrow.png" alt="" />
           </div>
-          <img className='ghost' src="ghost.png" alt="" />
+          <img className={'ghost '+ this.state.ghostClass} src="ghost.png" alt="" />
           <button type='button' className='start' onClick={(e) => this.startGame()}>Start!</button>
         </form>
         <form id={this.state.gameForm} action="">
@@ -346,5 +365,4 @@ class App extends React.Component {
 export default App;
 
 
-// Стилт для endForm 
-// при нажатии на newgame прятать endform
+// после анимации персонажа включать игровую форму
