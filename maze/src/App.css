@@ -10,6 +10,7 @@ body{
 }
 #menu{
   /* display: none; */
+  z-index: 9;
 }
 #maze{
   display: none;
@@ -52,7 +53,7 @@ body{
 }
 #activeGameForm{
   opacity: 1;
-  display: none;
+  /* display: none; */
   box-sizing: border-box;
   text-align: center;
   border: none;
@@ -215,7 +216,6 @@ form {
 }
 
 #endForm{
-  display: none;
 
   text-align: center;
   opacity: 0;

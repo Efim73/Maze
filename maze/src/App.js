@@ -26,10 +26,10 @@ class App extends React.Component {
       timeDisplay: '',
       spendTimeDisplay: '',
       menuClass: '',
-      catcher: 'ghost',
+      catcher: '',
       endFormClass: '',
       spendTime: 0,
-      gameForm: "activeGameForm",
+      gameForm: "gameForm",
 
       boyClass: '',
       ghostClass: '',
@@ -92,6 +92,8 @@ class App extends React.Component {
   }
   animate(){
     // console.log(456)
+    let boySpeed = 2;
+    let ghostSpeed = 2;
     if(this.state.ghostKeys.length>0){
       this.setState(function(state){
         let ctx = state.ctx;
@@ -103,29 +105,29 @@ class App extends React.Component {
         let ghost = document.getElementById('ghost')
         // let middleColor = ctx.getImageData(ghostStyle.left+15, ghostStyle.top+25, 1, 1).data[3];
         if(ghostKeys.includes(39)){
-          ghostStyle.left = ghostStyle.left + 1
+          ghostStyle.left = ghostStyle.left + ghostSpeed
           if(ctx.getImageData(ghostStyle.left+ghost.offsetWidth, ghostStyle.top, 1, ghost.offsetHeight).data.includes(255)){
-          ghostStyle.left = ghostStyle.left - 1;
+          ghostStyle.left = ghostStyle.left - ghostSpeed;
           }
         }
         if(ghostKeys.includes(37)){
-          ghostStyle.left = ghostStyle.left - 1
+          ghostStyle.left = ghostStyle.left - ghostSpeed
           if(ctx.getImageData( ghostStyle.left, ghostStyle.top, 1, ghost.offsetHeight).data.includes(255)){
-            ghostStyle.left = ghostStyle.left + 1;
+            ghostStyle.left = ghostStyle.left + ghostSpeed;
   
             }
         }
         if(ghostKeys.includes(38)){
-          ghostStyle.top = ghostStyle.top - 1
+          ghostStyle.top = ghostStyle.top - ghostSpeed
           if(ctx.getImageData(ghostStyle.left, ghostStyle.top, ghost.offsetWidth, 1).data.includes(255)){
-            ghostStyle.top = ghostStyle.top + 1;
+            ghostStyle.top = ghostStyle.top + ghostSpeed;
   
             }
         }
         if(ghostKeys.includes(40)){
-          ghostStyle.top = ghostStyle.top + 1
+          ghostStyle.top = ghostStyle.top + ghostSpeed
           if(ctx.getImageData(  ghostStyle.left ,ghostStyle.top+ghost.offsetHeight,  ghost.offsetWidth, 1).data.includes(255)){
-            ghostStyle.top = ghostStyle.top - 5;
+            ghostStyle.top = ghostStyle.top - ghostSpeed;
   
             }
         }
@@ -144,33 +146,33 @@ class App extends React.Component {
         // let middleColor = ctx.getImageData(boyStyle.left+15, boyStyle.top+25, 1, 1).data[3];
         if(keys.includes(68)){
 
-          boyStyle.left = boyStyle.left + 1
+          boyStyle.left = boyStyle.left +boySpeed
           console.log()
           // console.log(ctx.getImageData(boyStyle.left+30, boyStyle.top, 1, 1).data[3]);
           if(ctx.getImageData(boyStyle.left+boy.offsetWidth, boyStyle.top, 1, boy.offsetHeight).data.includes(255)){
-          boyStyle.left = boyStyle.left - 1;
+          boyStyle.left = boyStyle.left -boySpeed;
 
           }
         }
         if(keys.includes(65)){
-          boyStyle.left = boyStyle.left - 1
+          boyStyle.left = boyStyle.left -boySpeed
           if(ctx.getImageData( boyStyle.left, boyStyle.top, 1, boy.offsetHeight).data.includes(255)){
-            boyStyle.left = boyStyle.left + 1;
+            boyStyle.left = boyStyle.left +boySpeed;
   
             }
         }
         if(keys.includes(87)){
-          boyStyle.top = boyStyle.top - 1
+          boyStyle.top = boyStyle.top -boySpeed
           if(ctx.getImageData(boyStyle.left, boyStyle.top, boy.offsetWidth, 1).data.includes(255)){
             console.log(ctx.getImageData(boyStyle.left, boyStyle.top, boyStyle.left+boy.offsetWidth, 1).data.includes(255))
-            boyStyle.top = boyStyle.top + 1;
+            boyStyle.top = boyStyle.top +boySpeed;
   
             }
         }
         if(keys.includes(83)){
-          boyStyle.top = boyStyle.top + 1
+          boyStyle.top = boyStyle.top +boySpeed
           if(ctx.getImageData(  boyStyle.left ,boyStyle.top+boy.offsetHeight,  boy.offsetWidth, 1).data.includes(255)){
-            boyStyle.top = boyStyle.top - 1;
+            boyStyle.top = boyStyle.top - boySpeed
   
             }
         }
@@ -234,7 +236,7 @@ class App extends React.Component {
       this.setState(function (state) {
         let arrowAngle = state.arrowAngle;
         let arrowSpeed = state.arrowSpeed
-        let catcher;
+        let catcher = '';
         let ghostClass = ''
         let boyClass = ''
         if(arrowSpeed < 5){
@@ -250,6 +252,8 @@ class App extends React.Component {
             catcher = 'boy'
             boyClass = 'selectedHero'
           }
+          let gameForm = state.gameForm
+
           console.log(catcher, angle - Math.floor(angle / 360) * 360 );
           clearInterval(this.arrowInterval)
           arrowSpeed = 5;
@@ -263,6 +267,20 @@ class App extends React.Component {
           // arrowSpeed: state.arrowSpeed - 15 / 200,
 
 
+        }
+      },function(){
+
+        console.log(this.state.catcher);
+        if(this.state.catcher != ''){
+          setTimeout(() => {
+            this.setState({
+              
+              gameForm: 'activeGameForm',
+              menuClass: 'menuHidden',
+              
+            })
+
+          },4000)
         }
       })
     }, 10);
@@ -365,4 +383,5 @@ class App extends React.Component {
 export default App;
 
 
-// после анимации персонажа включать игровую форму
+// доделать стили для последней формы
+// догоняющий игрок должен подсвечиваться мигающим светом
