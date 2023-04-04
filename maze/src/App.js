@@ -14,10 +14,12 @@ class App extends React.Component {
       boyStyle: {
         left: 100,
         top: 100,
+        filter: '',
       },
       ghostStyle: {
         left: 180,
         top: 100,
+        filter: '',
       },
       arrowSpeed: 5,
       keys: [],
@@ -36,6 +38,7 @@ class App extends React.Component {
     }
     this.arrowInterval = '';
     this.gameInterval = '';
+    this.colorInterval = '';
 
     // Нужно чтобы в функции animate  можно было использовать this.state
     this.animate = this.animate.bind(this);
@@ -227,6 +230,47 @@ class App extends React.Component {
     }
     // зачем передавать this.animate
     setInterval(this.animate, 10)
+    this.colorInterval = setInterval(()=>{
+      // catcher.style.filter = "drop-shadow(0 0 10px green)";
+      this.setState(function(state){
+        let boyStyle = state.boyStyle;
+        let ghostStyle = state.ghostStyle;
+        if(state.catcher ==='boy'){
+
+          boyStyle.filter = 'drop-shadow(0 0 10px green)'
+        }
+        else{
+          ghostStyle.filter = 'drop-shadow(0 0 10px green)'
+
+        }
+        return{
+          boyStyle: boyStyle,
+          ghostStyle: ghostStyle,
+        }
+      })
+      setTimeout(() => {
+        // catcher.style.filter = "drop-shadow(0 0 10px 0)";
+        this.setState(function(state){
+          let boyStyle = state.boyStyle;
+          let ghostStyle = state.ghostStyle;
+          if(state.catcher ==='boy'){
+  
+            boyStyle.filter = 'drop-shadow(0 0 10px transparent)'
+          }
+          else{
+            ghostStyle.filter = 'drop-shadow(0 0 10px transparent)'
+  
+          }
+          return{
+            boyStyle: boyStyle,
+            ghostStyle: ghostStyle,
+          }
+        })
+
+
+      },500)
+
+    },1000)
   }
   startGame() {
     let randomTime = Math.random()*2900 + 100;
@@ -239,6 +283,7 @@ class App extends React.Component {
         let catcher = '';
         let ghostClass = ''
         let boyClass = ''
+
         if(arrowSpeed < 5){
           arrowSpeed = arrowSpeed - 0.01
         }
@@ -246,12 +291,15 @@ class App extends React.Component {
           let angle = state.arrowAngle
           if((angle - Math.floor(angle / 360) * 360 ) < 180){
             catcher = 'ghost'
+
+  
             ghostClass = 'selectedHero'
           }
           else{
             catcher = 'boy'
             boyClass = 'selectedHero'
           }
+
           let gameForm = state.gameForm
 
           console.log(catcher, angle - Math.floor(angle / 360) * 360 );
@@ -326,11 +374,13 @@ class App extends React.Component {
     const boyStyle = {
       left: this.state.boyStyle.left+'px',
       top: this.state.boyStyle.top+'px',
+      filter: this.state.boyStyle.filter,
 
     }
     const ghostStyle = {
       left: this.state.ghostStyle.left+'px',
-      top: this.state.ghostStyle.top+'px'
+      top: this.state.ghostStyle.top+'px',
+      filter: this.state.ghostStyle.filter,
 
     }
 
@@ -366,8 +416,8 @@ class App extends React.Component {
           </div>
         </form>
         <form className={this.state.endFormClass} id='endForm' action="" onSubmit={(e) => this.newGame()}>
-          <h2>You won</h2>
-          <h3>Your time {this.state.spendTimeDisplay}</h3>
+          <h2 className='winner'>You won</h2>
+          <h3 className='result'>Your time {this.state.spendTimeDisplay}</h3>
           <img src={this.state.catcher+'.png'} alt="" />
           <button className='newGame' >New Game</button>
         </form>
@@ -383,5 +433,6 @@ class App extends React.Component {
 export default App;
 
 
-// доделать стили для последней формы
-// догоняющий игрок должен подсвечиваться мигающим светом
+// если время вышло игровая форма должна прятаться
+// стили для конечной заставки
+// по нажатию на новую игру прятать конечную заставку и показывать первую заставку
