@@ -24,7 +24,7 @@ class App extends React.Component {
       arrowSpeed: 5,
       keys: [],
       ghostKeys: [],
-      time: 1200,
+      time: 500,
       timeDisplay: '',
       spendTimeDisplay: '',
       menuClass: '',
@@ -65,9 +65,11 @@ class App extends React.Component {
       //   time = time -1
       // },1000)
       if(state.time===0){
+
         clearInterval(this.gameInterval);
         catcher = catcher === 'boy'? 'ghost' : 'boy';
         endFormClass = 'endFormVisible'  
+        gameForm = 'gameForm';
 
       }
       let minutes = Math.floor(state.time/600)
@@ -80,6 +82,7 @@ class App extends React.Component {
       let spendMinutes = Math.floor(spendTime/600)
       let spendSeconds = Math.floor((spendTime - spendMinutes*600)/10)
       let spendMs = spendTime%10
+      
 
       return{
 
@@ -187,7 +190,6 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-    this.gameInterval = setInterval(this.time ,100)
     document.onkeydown = (event) => {
       console.log(event.keyCode)
       this.setState(function (state) {
@@ -228,7 +230,6 @@ class App extends React.Component {
         }
       })
     }
-    // зачем передавать this.animate
     setInterval(this.animate, 10)
     this.colorInterval = setInterval(()=>{
       // catcher.style.filter = "drop-shadow(0 0 10px green)";
@@ -321,10 +322,23 @@ class App extends React.Component {
         console.log(this.state.catcher);
         if(this.state.catcher != ''){
           setTimeout(() => {
+          this.gameInterval = setInterval(this.time ,100)
+
             this.setState({
               
               gameForm: 'activeGameForm',
               menuClass: 'menuHidden',
+              time: 1200,
+              boyStyle: {
+                left: 100,
+                top: 100,
+                filter: '',
+              },
+              ghostStyle: {
+                left: 180,
+                top: 100,
+                filter: '',
+              },
               
             })
 
@@ -340,6 +354,7 @@ class App extends React.Component {
 
 
         return{
+          spendTime: 0,
           arrowSpeed: state.arrowSpeed - 0.1,
           // gameForm: "activeGameForm",
           // menuClass: 'menuHidden',
@@ -365,7 +380,18 @@ class App extends React.Component {
     ctx.drawImage(img, 0, 0, window.innerHeight, window.innerHeight)
   }
   newGame(){
+    this.setState(function(state){
+      let endFormClass = state.endFormClass;
+      let menuClass = state.menuClass;
+      endFormClass = '';
+      menuClass = ''
 
+      return{
+        arrowAngle: 90,
+        endFormClass: endFormClass,
+        menuClass: menuClass
+      }
+    })
   }
   render() {
     const arrowStyle = {
@@ -419,7 +445,7 @@ class App extends React.Component {
           <h2 className='winner'>You won</h2>
           <h3 className='result'>Your time {this.state.spendTimeDisplay}</h3>
           <img src={this.state.catcher+'.png'} alt="" />
-          <button className='newGame' >New Game</button>
+          <button type='button' className='newGame' onClick={(e) => this.newGame()}>New Game</button>
         </form>
       </div>
     )

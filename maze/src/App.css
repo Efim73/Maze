@@ -215,6 +215,9 @@ form {
 .menuHidden{
   transform: translate(-50%, -200%);
 }
+.menuInVisible{
+  transform: translate(0, 0);
+}
 
 #endForm{
 
